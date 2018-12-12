@@ -41,24 +41,19 @@ if __name__ == "__main__":
   samples, targets_data = trainData()
   samples = samples[:-2]
 
-  n_samples = samples.shape[0]
-  sample_dim = samples.shape[1]
-
   print('Extracting targets')
   targets = targets_data[:,1].reshape(-1,1)
   review_no = targets_data[:,0]
 
-  training_subset = 5000
   print('Cropping training data')
+  training_subset = 5000
   less_samples = less_data(samples, training_subset)
   less_targets = less_data(targets, training_subset)
 
   # X_train, X_val, y_train, y_val = train_test_split(
   #   less_samples, less_targets, train_size = 0.75)
   
-  # print('--')
   # for c in [0.01, 0.05, 0.25, 0.5, 1]: # regularization paramters
-
   #   lr = LogisticRegression(C=c) 
   #   lr.fit(X_train, y_train)
   #   score = lr.score(X_val, y_val)
@@ -83,16 +78,5 @@ if __name__ == "__main__":
   less_test_samples = less_data(test_samples, test_subset)
   less_test_targets = less_data(test_targets, test_subset)
 
+  print('Accuracy: ', end='')
   print(lr.score(less_test_samples, less_test_targets))
-
-  # Vector extraction
-  # reviews = [
-  #   'This is the first document.',
-  #   'This document is the second document.',
-  #   'And this is the third one.',
-  #   'Is this the first document?',
-  #   ]
-
-  # cv = CountVectorizer()
-  # x = cv.fit_transform(reviews)
-  # print(x.toarray())
