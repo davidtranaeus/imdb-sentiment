@@ -38,11 +38,9 @@ def less_data(data, n_of_each = 5000):
 
 def prepare_data(samples, targets, subset=1000, is_tfidf=False, is_binary=False):
   print('Cropping data')
-  training_subset = subset
   less_samples = less_data(samples, subset)
   less_targets = less_data(targets, subset)
   less_targets = np.ravel(less_targets)
-
   if is_binary:
     print('Setting binary values')
     less_samples = binary(less_samples)
