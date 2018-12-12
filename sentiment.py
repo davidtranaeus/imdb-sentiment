@@ -38,7 +38,7 @@ def less_data(data, n_of_each = 5000):
 if __name__ == "__main__":
   
   print('Reading training data')
-  samples, targets_data = trainData()
+  samples, targets_data, vocabulary = trainData()
   samples = samples[:-2]
 
   print('Extracting targets')
@@ -64,7 +64,7 @@ if __name__ == "__main__":
   lr.fit(less_samples, less_targets)
 
   print('Reading test data')
-  test_samples, test_targets_data = testData()
+  test_samples, test_targets_data = testData(vocab = vocabulary)
   print(test_samples.shape)
   test_samples = test_samples[:-2]
   n_test_samples = test_samples.shape[0]
