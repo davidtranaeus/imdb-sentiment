@@ -4,6 +4,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics import confusion_matrix
+from sklearn.neural_network import MLPRegressor
 from parserr import *
 
 def tf_idf(samples):
@@ -52,7 +53,7 @@ def prepare_data(samples, targets, subset=1000, is_tfidf=False, is_binary=False)
   return less_samples, less_targets
   
 if __name__ == "__main__":
-  
+  use_knn = False
   use_regressor = False
   is_binary = False
   is_tfidf = False
@@ -72,9 +73,13 @@ if __name__ == "__main__":
   if use_regressor:
     print('Training logistic regression')
     model = LogisticRegression() 
-  else:
+  elif use_knn:
     print('Training KNN')
     model = KNeighborsClassifier(n_neighbors=3)
+
+  else:
+    print("Training MLP")
+    model = MLPRegressor(hidden_layer_sizes=(50,30,), max_iter=200)
 
   model.fit(train_samples, train_targets)
 

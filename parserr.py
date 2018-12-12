@@ -92,21 +92,33 @@ class Parser(object):
 
 
     
-def trainData(dir_names = ["aclImdb/train/neg","aclImdb/train/pos"], nrofclasses = 2):
+def trainData(dir_names = ["aclImdb/train/neg","aclImdb/train/pos"], nrofclasses = 2,crop=False,Sample_Size = None):
     filenames = []
-    for i in range(nrofclasses):
-        filenames = np.append(filenames, [os.path.join(dir_names[i], fn) for fn in os.listdir(dir_names[i])])
-        filenames = np.append(filenames, ["NewClass"])
+    if not crop:
+        for i in range(nrofclasses):
+            filenames = np.append(filenames, [os.path.join(dir_names[i], fn) for fn in os.listdir(dir_names[i])])
+            filenames = np.append(filenames, ["NewClass"])
+    else:
+        for i in range(nrofclasses):
+            for fn in range(Sample_Size):
+                filenames = np.append(filenames, [os.path.join(dir_name[i], os.listdir(dir_name[i])[fn])])
+            filenames = np.append(filenames, ["NewClass"])
 
     parser = Parser(filenames,nrofclasses=2)
     parser.build_vocabulary()
     return parser.wordMatrix, parser.targets, parser.vocab
 
-def testData(dir_names = ["aclImdb/test/neg","aclImdb/test/pos"], nrofclasses = 2, Test = True, vocab = []):
+def testData(dir_names = ["aclImdb/test/neg","aclImdb/test/pos"], nrofclasses = 2, Test = True, vocab = [],crop=False,Sample_Size = None):
     filenames = []
-    for i in range(nrofclasses):
-        filenames = np.append(filenames, [os.path.join(dir_names[i], fn) for fn in os.listdir(dir_names[i])])
-        filenames = np.append(filenames, ["NewClass"])
+    if not crop:
+        for i in range(nrofclasses):
+            filenames = np.append(filenames, [os.path.join(dir_names[i], fn) for fn in os.listdir(dir_names[i])])
+            filenames = np.append(filenames, ["NewClass"])
+    else:
+        for i in range(nrofclasses):
+            for fn in range(Sample_Size):
+                filenames = np.append(filenames, [os.path.join(dir_name[i], os.listdir(dir_name[i])[fn])])
+            filenames = np.append(filenames, ["NewClass"])
 
     parser = Parser(filenames,nrofclasses=2,doTest = Test)
     if not Test:
@@ -127,8 +139,14 @@ if __name__ == "__main__":
 
     filenames = []
     nrofclasses = 2
+    # for i in range(nrofclasses):
+    #     filenames = np.append(filenames, [os.path.join(dir_name[i], fn) for fn in os.listdir(dir_name[i])])
+    #     filenames = np.append(filenames, ["NewClass"])
+        
+    # print(os.listdir("aclImdb/test/neg")
     for i in range(nrofclasses):
-        filenames = np.append(filenames, [os.path.join(dir_name[i], fn) for fn in os.listdir(dir_name[i])])
+        for fn in range(1000):
+            filenames = np.append(filenames, [os.path.join(dir_name[i], os.listdir(dir_name[i])[fn])])
         filenames = np.append(filenames, ["NewClass"])
 
     parser = Parser(filenames)
