@@ -18,7 +18,7 @@ class Parser(object):
         "it","for","not","on","with","he","as","you","do","at","this","but","his","by"
         ,"from","they","we","say","her","she"]
         self.nrofclasses = nrofclasses
-        self.targets = np.zeros([self.nr_docs-self.nrofclasses,2])
+        self.targets = np.zeros([self.nr_docs,2])
         self.label = 0
         
 
@@ -101,7 +101,7 @@ def testData(dir_names = ["aclImdb/test/neg","aclImdb/test/pos"], nrofclasses = 
     return parser.wordMatrix
 
 
-if __name__ == '_main_':
+if __name__ == "__main__":
     # dir_name = ["aclImdb/train/neg","aclImdb/train/pos"]
     dir_name = ["aclImdb/test/neg","aclImdb/train/pos"]
 
@@ -115,6 +115,7 @@ if __name__ == '_main_':
     parser.build_vocabulary()
     # print(parser.vocab)
     # print(parser.wordnr)
-    # print(parser.wordMatrix.shape)
+    print(parser.wordMatrix.shape)
     # print(parser.wordMatrix[:2,:200])
-    # print(parser.targets[:,:])
+    print(parser.targets.shape)
+    print(parser.targets)
