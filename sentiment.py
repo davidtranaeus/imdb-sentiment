@@ -37,36 +37,33 @@ def less_data(data, n_of_each = 5000):
 
   return less
 
-def prepare_data(samples, targets, subset=1000, is_tfidf=False, is_binary=False):
-  print('Cropping data')
-  less_samples = less_data(samples, subset)
-  less_targets = less_data(targets, subset)
-  less_targets = np.ravel(less_targets)
+def prepare_data(samples, targets, is_tfidf=False, is_binary=False):
   if is_binary:
     print('Setting binary values')
-    less_samples = binary(less_samples)
+    samples = binary(samples)
   
   if is_tfidf:
     print('Setting tf-idf values')
-    less_samples = tf_idf(less_samples)
+    samples = tf_idf(samples)
 
-  return less_samples, less_targets
+  return samples, targets
   
 if __name__ == "__main__":
   use_knn = False
   use_regressor = False
   is_binary = False
   is_tfidf = False
-  subset = 1000
+
+  do_crop = True
+  partition_size = 1000
 
   print('Reading training data')
-  train_samples, train_targets_data, vocabulary = trainData()
+  train_samples, train_targets_data, vocabulary = trainData(crop=do_crop, Sample_Size=partition_size)
   train_samples = train_samples[:-2]
   train_targets = train_targets_data[:,1].reshape(-1,1)
   train_samples, train_targets = prepare_data(
     train_samples, 
     train_targets,
-    subset=subset,
     is_tfidf=is_tfidf,
     is_binary=is_binary)
 
@@ -76,7 +73,6 @@ if __name__ == "__main__":
   elif use_knn:
     print('Training KNN')
     model = KNeighborsClassifier(n_neighbors=3)
-
   else:
     print("Training MLP")
     model = MLPRegressor(hidden_layer_sizes=(50,30,), max_iter=200)
@@ -84,13 +80,12 @@ if __name__ == "__main__":
   model.fit(train_samples, train_targets)
 
   print('Reading test data')
-  test_samples, test_targets_data = testData(vocab = vocabulary)
+  test_samples, test_targets_data = testData(vocab = vocabulary, crop=do_crop, Sample_Size=partition_size)
   test_samples = test_samples[:-2]
   test_targets = test_targets_data[:,1].reshape(-1,1)
   test_samples, test_targets = prepare_data(
     test_samples, 
     test_targets,
-    subset=subset,
     is_tfidf=is_tfidf,
     is_binary=is_binary)
 
