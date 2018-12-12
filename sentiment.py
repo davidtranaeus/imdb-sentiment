@@ -2,6 +2,7 @@ import numpy as np
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics import confusion_matrix
 from parserr import *
 
 def tf_idf(samples):
@@ -85,3 +86,7 @@ if __name__ == "__main__":
 
   print('Accuracy: ', end='')
   print(lr.score(test_samples, test_targets))
+
+  print(confusion_matrix(
+    test_targets,
+    lr.predict(test_samples)))
