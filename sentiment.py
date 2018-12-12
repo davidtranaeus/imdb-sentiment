@@ -49,6 +49,7 @@ if __name__ == "__main__":
   training_subset = 5000
   less_samples = less_data(samples, training_subset)
   less_targets = less_data(targets, training_subset)
+  less_targets = np.ravel(less_targets)
 
   # X_train, X_val, y_train, y_val = train_test_split(
   #   less_samples, less_targets, train_size = 0.75)
@@ -77,6 +78,7 @@ if __name__ == "__main__":
   test_subset = 5000
   less_test_samples = less_data(test_samples, test_subset)
   less_test_targets = less_data(test_targets, test_subset)
+  less_test_targets = np.ravel(less_test_targets)
 
   print('Accuracy: ', end='')
   print(lr.score(less_test_samples, less_test_targets))
