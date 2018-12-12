@@ -6,7 +6,7 @@ import numpy as np
 
 
 class Parser(object):
-    def __init__(self, filenames, nrofclasses = 0):
+    def __init__(self, filenames, nrofclasses = 0, doTest=False):
         self.sources = filenames
         self.vocab = {}
         self.nr_docs = len(self.sources)
@@ -20,6 +20,7 @@ class Parser(object):
         self.nrofclasses = nrofclasses
         self.targets = np.zeros([self.nr_docs,2])
         self.label = 0
+        self.doTest = doTest
         
 
     def clean_line(self, line):
@@ -54,12 +55,12 @@ class Parser(object):
                 k = k.lower()
                 # print(k)
                 if k not in self.blacklist:
-                    if k not in self.vocab:
+                    if k not in self.vocab and not self.doTest:
                         self.vocab[k] = self.wordnr
                         self.wordnr += 1
                         # print(self.docnr)
                         self.wordMatrix[self.docnr-1,self.wordnr] += 1 
-                    else:
+                    elif not self.doTest:
                         self.wordMatrix[self.docnr-1,self.vocab.get(k)] += 1
 
         self.remove_excess_elements()
@@ -78,6 +79,9 @@ class Parser(object):
     # def remove_excess_elements_targets(self):
     #     self.targets = self.targets[:self.nr_docs-self.nrofclasses,:]
 
+    def set_vocab(self, vocab):
+        self.vocab = vocab
+
 
     
 def trainData(dir_names = ["aclImdb/train/neg","aclImdb/train/pos"], nrofclasses = 2):
@@ -88,17 +92,25 @@ def trainData(dir_names = ["aclImdb/train/neg","aclImdb/train/pos"], nrofclasses
 
     parser = Parser(filenames,nrofclasses=2)
     parser.build_vocabulary()
-    return parser.wordMatrix, parser.targets
+    return parser.wordMatrix, parser.targets, parser.vocab
 
-def testData(dir_names = ["aclImdb/test/neg","aclImdb/test/pos"], nrofclasses = 2):
+def testData(dir_names = ["aclImdb/test/neg","aclImdb/test/pos"], nrofclasses = 2, Test = True, vocab = []):
     filenames = []
     for i in range(nrofclasses):
         filenames = np.append(filenames, [os.path.join(dir_names[i], fn) for fn in os.listdir(dir_names[i])])
         filenames = np.append(filenames, ["NewClass"])
 
-    parser = Parser(filenames,nrofclasses=2)
-    parser.build_vocabulary()
-    return parser.wordMatrix, parser.targets
+    parser = Parser(filenames,nrofclasses=2,doTest = Test)
+    if not Test:
+        parser.build_vocabulary()
+        return parser.wordMatrix, parser.targets
+
+    else:
+        parser.set_vocab(vocab)
+        parser.build_vocabulary()
+        return parser.wordMatrix, parser.targets
+
+
 
 
 if __name__ == "__main__":
