@@ -6,7 +6,7 @@ import numpy as np
 
 
 class Parser(object):
-    def __init__(self, filenames):
+    def __init__(self, filenames, nrofclasses = 0):
         self.sources = filenames
         self.vocab = {}
         self.nr_docs = len(self.sources)
@@ -17,9 +17,9 @@ class Parser(object):
         self.blacklist = ["the","be","to","of","and","a","in","that","have","I",
         "it","for","not","on","with","he","as","you","do","at","this","but","his","by"
         ,"from","they","we","say","her","she"]
-        self.targets = np.zeros([len(self.sources),2])
+        self.nrofclasses = nrofclasses
+        self.targets = np.zeros([self.nr_docs-self.nrofclasses,2])
         self.label = 0
-        self.nrofclasses = 0
         
 
     def clean_line(self, line):
@@ -63,7 +63,7 @@ class Parser(object):
                         self.wordMatrix[self.docnr-1,self.vocab.get(k)] += 1
 
         self.remove_excess_elements()
-        self.remove_excess_elements_targets()
+        # self.remove_excess_elements_targets()
 
 
 
@@ -75,11 +75,9 @@ class Parser(object):
     def remove_excess_elements(self):
         self.wordMatrix = self.wordMatrix[:,1:self.wordnr]
 
-    def remove_excess_elements_targets(self):
-        self.targets = self.targets[:self.nr_docs-self.nrofclasses,:]
+    # def remove_excess_elements_targets(self):
+    #     self.targets = self.targets[:self.nr_docs-self.nrofclasses,:]
 
-    def set_nrofclasses(self,nr):
-        self.nrofclasses = nr
 
     
 def trainData(dir_names = ["aclImdb/train/neg","aclImdb/train/pos"], nrofclasses = 2):
@@ -88,8 +86,7 @@ def trainData(dir_names = ["aclImdb/train/neg","aclImdb/train/pos"], nrofclasses
         filenames = np.append(filenames, [os.path.join(dir_names[i], fn) for fn in os.listdir(dir_names[i])])
         filenames = np.append(filenames, ["NewClass"])
 
-    parser = Parser(filenames)
-    parser.set_nrofclasses(nrofclasses)
+    parser = Parser(filenames,nrofclasses=2)
     parser.build_vocabulary()
     return parser.wordMatrix
 
@@ -99,13 +96,12 @@ def testData(dir_names = ["aclImdb/test/neg","aclImdb/test/pos"], nrofclasses = 
         filenames = np.append(filenames, [os.path.join(dir_names[i], fn) for fn in os.listdir(dir_names[i])])
         filenames = np.append(filenames, ["NewClass"])
 
-    parser = Parser(filenames)
-    parser.set_nrofclasses(nrofclasses)
+    parser = Parser(filenames,nrofclasses=2)
     parser.build_vocabulary()
     return parser.wordMatrix
 
 
-if _name_ == '_main_':
+if __name__ == '_main_':
     # dir_name = ["aclImdb/train/neg","aclImdb/train/pos"]
     dir_name = ["aclImdb/test/neg","aclImdb/train/pos"]
 
@@ -116,7 +112,6 @@ if _name_ == '_main_':
         filenames = np.append(filenames, ["NewClass"])
 
     parser = Parser(filenames)
-    parser.set_nrofclasses(nrofclasses)
     parser.build_vocabulary()
     # print(parser.vocab)
     # print(parser.wordnr)
