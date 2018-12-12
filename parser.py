@@ -91,7 +91,7 @@ def trainData(dir_names = ["aclImdb/train/neg","aclImdb/train/pos"], nrofclasses
     parser = Parser(filenames)
     parser.set_nrofclasses(nrofclasses)
     parser.build_vocabulary()
-    return parser.wordMatrix
+    return parser.wordMatrix, parser.targets
 
 def testData(dir_names = ["aclImdb/test/neg","aclImdb/test/pos"], nrofclasses = 2):
     filenames = []
@@ -102,10 +102,10 @@ def testData(dir_names = ["aclImdb/test/neg","aclImdb/test/pos"], nrofclasses = 
     parser = Parser(filenames)
     parser.set_nrofclasses(nrofclasses)
     parser.build_vocabulary()
-    return parser.wordMatrix
+    return parser.wordMatrix, parser.targets
 
 
-if _name_ == '_main_':
+if __name__ == '_main_':
     # dir_name = ["aclImdb/train/neg","aclImdb/train/pos"]
     dir_name = ["aclImdb/test/neg","aclImdb/train/pos"]
 
