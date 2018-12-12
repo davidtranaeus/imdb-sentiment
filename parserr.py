@@ -101,7 +101,7 @@ def trainData(dir_names = ["aclImdb/train/neg","aclImdb/train/pos"], nrofclasses
     else:
         for i in range(nrofclasses):
             for fn in range(Sample_Size):
-                filenames = np.append(filenames, [os.path.join(dir_name[i], os.listdir(dir_name[i])[fn])])
+                filenames = np.append(filenames, [os.path.join(dir_name[i], os.listdir(dir_names[i])[fn])])
             filenames = np.append(filenames, ["NewClass"])
 
     parser = Parser(filenames,nrofclasses=2)
@@ -117,7 +117,7 @@ def testData(dir_names = ["aclImdb/test/neg","aclImdb/test/pos"], nrofclasses = 
     else:
         for i in range(nrofclasses):
             for fn in range(Sample_Size):
-                filenames = np.append(filenames, [os.path.join(dir_name[i], os.listdir(dir_name[i])[fn])])
+                filenames = np.append(filenames, [os.path.join(dir_name[i], os.listdir(dir_names[i])[fn])])
             filenames = np.append(filenames, ["NewClass"])
 
     parser = Parser(filenames,nrofclasses=2,doTest = Test)
