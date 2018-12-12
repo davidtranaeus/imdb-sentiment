@@ -2,6 +2,7 @@ import numpy as np
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer
+from parser import *
 
 def tf_idf(samples):
   """tf-idf representation"""
@@ -24,16 +25,26 @@ def binary(samples):
 
 if __name__ == "__main__":
   
-  # samples
-  # targets
+  samples, targets_data = trainData()
+  samples = binary(samples[:-2])
+  targets = targets_data[:,1]
+  review_no = targets_data[:,0]
+  # 18750
 
+  print(samples.shape)
+  print(targets.shape)
+  X_train = samples[:18750]
+  y_train = targets[:18750]
+  X_val = samples[18750:]
+  y_val = samples[18750:]
 
-  X_train, X_val, y_train, y_val = train_test_split(
-    samples, targets, train_size = 0.75)
-
+  # X_train, X_val, y_train, y_val = train_test_split(
+  #   samples, targets, train_size = 0.75)
+  
+  print('--')
   for c in [0.01, 0.05, 0.25, 0.5, 1]: # regularization paramters
 
-    lr = LogisticRegression(c=c) 
+    lr = LogisticRegression(C=c) 
     lr.fit(X_train, y_train)
     score = lr.score(X_val, y_val)
     print(score)
