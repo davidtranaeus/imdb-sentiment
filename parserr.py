@@ -55,12 +55,14 @@ class Parser(object):
                 k = k.lower()
                 # print(k)
                 if k not in self.blacklist:
-                    if k not in self.vocab and not self.doTest:
+                    if k not in self.vocab:
+                        if self.doTest:
+                            continue
                         self.vocab[k] = self.wordnr
                         self.wordnr += 1
                         # print(self.docnr)
                         self.wordMatrix[self.docnr-1,self.wordnr] += 1 
-                    elif not self.doTest:
+                    else:
                         self.wordMatrix[self.docnr-1,self.vocab.get(k)] += 1
 
         self.remove_excess_elements()
