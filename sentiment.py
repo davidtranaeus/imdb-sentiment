@@ -1,5 +1,6 @@
 import numpy as np
 from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics import confusion_matrix
@@ -35,18 +36,18 @@ def less_data(data, n_of_each = 5000):
 
   return less
 
-def prepare_data(samples, targets, subset=1000, tfidf=False, binary=False):
+def prepare_data(samples, targets, subset=1000, is_tfidf=False, is_binary=False):
   print('Cropping data')
   training_subset = subset
   less_samples = less_data(samples, subset)
   less_targets = less_data(targets, subset)
   less_targets = np.ravel(less_targets)
 
-  if binary:
+  if is_binary:
     print('Setting binary values')
     less_samples = binary(less_samples)
   
-  if tfidf:
+  if is_tfidf:
     print('Setting tf-idf values')
     less_samples = tf_idf(less_samples)
 
@@ -54,6 +55,7 @@ def prepare_data(samples, targets, subset=1000, tfidf=False, binary=False):
   
 if __name__ == "__main__":
   
+  use_regressor = False
   is_binary = False
   is_tfidf = False
   subset = 1000
@@ -66,12 +68,17 @@ if __name__ == "__main__":
     train_samples, 
     train_targets,
     subset=subset,
-    tfidf=is_tfidf,
-    binary=is_binary)
+    is_tfidf=is_tfidf,
+    is_binary=is_binary)
 
-  print('Training logistic regression')
-  lr = LogisticRegression() 
-  lr.fit(train_samples, train_targets)
+  if use_regressor:
+    print('Training logistic regression')
+    model = LogisticRegression() 
+  else:
+    print('Training KNN')
+    model = KNeighborsClassifier(n_neighbors=3)
+
+  model.fit(train_samples, train_targets)
 
   print('Reading test data')
   test_samples, test_targets_data = testData(vocab = vocabulary)
@@ -81,12 +88,12 @@ if __name__ == "__main__":
     test_samples, 
     test_targets,
     subset=subset,
-    tfidf=is_tfidf,
-    binary=is_binary)
+    is_tfidf=is_tfidf,
+    is_binary=is_binary)
 
   print('Accuracy: ', end='')
-  print(lr.score(test_samples, test_targets))
+  print(model.score(test_samples, test_targets))
 
   print(confusion_matrix(
     test_targets,
-    lr.predict(test_samples)))
+    model.predict(test_samples)))
