@@ -64,8 +64,11 @@ class Parser(object):
                         self.wordMatrix[self.docnr-1,self.wordnr] += 1 
                     else:
                         self.wordMatrix[self.docnr-1,self.vocab.get(k)] += 1
+        if self.doTest:
+            self.remove_excess_elements_test()
 
-        self.remove_excess_elements()
+        else:
+            self.remove_excess_elements()
         # self.remove_excess_elements_targets()
 
 
@@ -77,6 +80,9 @@ class Parser(object):
 
     def remove_excess_elements(self):
         self.wordMatrix = self.wordMatrix[:,1:self.wordnr]
+
+    def remove_excess_elements_test(self):
+        self.wordMatrix = self.wordMatrix[:,1:len(self.vocab)]
 
     # def remove_excess_elements_targets(self):
     #     self.targets = self.targets[:self.nr_docs-self.nrofclasses,:]
