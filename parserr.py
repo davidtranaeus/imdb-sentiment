@@ -3,6 +3,10 @@ import argparse
 import time
 import string
 import numpy as np
+from nltk.stem import LancasterStemmer
+from nltk.stem import PorterStemmer
+from nltk.corpus import wordnet
+from nltk.stem import WordNetLemmatizer
 
 
 class Parser(object):
@@ -21,6 +25,7 @@ class Parser(object):
         self.targets = np.zeros([self.nr_docs,2])
         self.label = 0
         self.doTest = doTest
+        self.lemma = WordNetLemmatizer()
         
 
     def clean_line(self, line):
@@ -29,6 +34,8 @@ class Parser(object):
         # Remove characters in line that is not whitelisted and join together
         answer = ''.join(filter(whitelist.__contains__, line))
         answer = ' '.join(answer.split())
+
+        ' '.join([self.lemma.lemmatize(word, pos='v') for word in answer.split()])
         # Return clean a line
         return [answer]
 
@@ -50,11 +57,17 @@ class Parser(object):
      
         # Iterate through cleaned lines and add word to vocab if it doesn't exist
         # Also build a word vector for each document
+        ancaster = LancasterStemmer()
+        porter = PorterStemmer()
+        wh_lemmas = set(wordnet.all_lemma_names())
+
         for i in self.text_gen():
             for k in i[0].split():
-                k = k.lower()
-                # print(k)
-                if k not in self.blacklist:
+
+                # k = ancaster.stem(k)
+                # k = porter.stem(k)
+                # if k not in self.blacklist:
+                if k not in self.blacklist and k in wh_lemmas:
                     if k not in self.vocab:
                         if self.doTest:
                             continue
