@@ -83,7 +83,14 @@ if __name__ == "__main__":
   print(train_samples.shape)
 
   print('Reading test data')
-  test_samples, test_targets_data = testData(vocab = vocabulary, crop=True, Sample_Size=p_size)
+  test_samples, test_targets_data = testData(
+    dir_names=[
+      # 'amazon_reviews/processed_acl/reviews_as_txt/neg',
+      # 'amazon_reviews/processed_acl/reviews_as_txt/pos'
+      'amazon_reviews/processed_acl/kitchen_reviews/neg',
+      'amazon_reviews/processed_acl/kitchen_reviews/pos'], 
+    vocab = vocabulary, crop=True, 
+    Sample_Size=p_size)
   test_samples = test_samples[:-2]
   test_targets_data = test_targets_data[:-2]
   test_targets = test_targets_data[:,1].reshape(-1,1)
