@@ -1,4 +1,8 @@
 # imdb-sentiment: A project in DD2418 sprakt18 HT18-1 Language Engineering at KTH. Made by David Tranæus (davidtra@kth.se) and Karl Andrén (karlandr@kth.se)
+
+## What is it?
+imdb-sentiment is machine learning project in sentiment analysis. A selected classifier is trained on IMDb reviews and then tested on Amazon reviews. The purpose is to examine how well a model can classify reviews on a topic which it has not been exposed to during training.
+
 ## How to execute the program
 1. Install dependecies: sklearn, numpy and nltk (nltk.corpus and nltk.stem)
 2. Run the sentiment classification by specifying a classifier, test set and a optional data representation with the flags:
