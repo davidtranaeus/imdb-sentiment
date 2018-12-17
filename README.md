@@ -11,7 +11,7 @@ imdb-sentiment is machine learning project in sentiment analysis. A selected cla
   - --classifier ['regression' or 'mlp'], regression is logistic regression and mlp is a neural network
   - --test ['books' or 'kitchen'], books are book reviews from the Amazon dataset and kitchen are kitchen accessory reviews from the Amazon dataset.
   - -b and -t will implement binary data representation or tf-idf representation for the bag of words vectors. Term frequency count representation is default.
-- Example running with python3: python3 sentiment.py --classifier 'regression' --test 'books' -t
+- Example running with python3: python3 sentiment.py --classifier 'regression' --test 'books'
 3. The script will print the 10-fold cross-validation accuaracies, confusion matrix and the classification accuracy on the selected test set.
 
 ## Dataset references
