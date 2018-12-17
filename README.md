@@ -1,15 +1,17 @@
-# imdb-sentiment: A project in DD2418 sprakt18 HT18-1 Language Engineering at KTH. Made by David Tranæus (davidtra@kth.se) and Karl Andrén (karlandr@kth.se)
+# imdb-sentiment: A project in DD2418 sprakt18 HT18-1 Language Engineering at KTH.
+
+# Made by David Tranæus (davidtra@kth.se) and Karl Andrén (karlandr@kth.se)
 
 ## What is it?
 imdb-sentiment is machine learning project in sentiment analysis. A selected classifier is trained on IMDb reviews and then tested on Amazon reviews. The purpose is to examine how well a model can classify reviews on a topic which it has not been exposed to during training.
 
 ## How to execute the program
-1. Install dependecies: sklearn, numpy and nltk (nltk.corpus and nltk.stem)
+1. Install dependecies: sklearn, numpy and nltk (nltk.corpus and nltk.stem) using pip.
 2. Run the sentiment classification by specifying a classifier, test set and a optional data representation with the flags:
   - --classifier ['regression' or 'mlp'], regression is logistic regression and mlp is a neural network
   - --test ['books' or 'kitchen'], books are book reviews from the Amazon dataset and kitchen are kitchen accessory reviews from the Amazon dataset.
   - -b and -t will implement binary data representation or tf-idf representation for the bag of words vectors. Term frequency count representation is default.
-- Example running with python3: python3 sentiment.py --classifier 'regression' --test books -t
+- Example running with python3: python3 sentiment.py --classifier 'regression' --test 'books' -t
 3. The script will print the 10-fold cross-validation accuaracies, confusion matrix and the classification accuracy on the selected test set.
 
 ## Dataset references
